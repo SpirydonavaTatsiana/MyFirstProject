@@ -13,6 +13,9 @@ public class Employee {
         this.salary = salary;
         this.age  = age;
     }
+    public int getAge() {
+        return age;
+    }
     public void displayInfo() {
         System.out.println("Информация о сотруднике:");
         System.out.println("ФИО: " + fullname);

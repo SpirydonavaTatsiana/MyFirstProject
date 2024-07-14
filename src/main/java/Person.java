@@ -14,7 +14,7 @@ public class Person {
         String salary;
         String age;
         for (Employee employee : employee) {
-            if (employee.getAge() > 40) {
+            if (age() > 40) {
                 System.out.println("Информация о сотруднике:");
                 System.out.println("ФИО: " + fullname);
                 System.out.println("Должность: " + position);

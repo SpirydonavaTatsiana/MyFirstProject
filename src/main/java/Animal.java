@@ -45,9 +45,11 @@ class Dog extends Animal {
 }
 class Cat extends Animal {
     private static int catCount = 0;
+    private boolean isFull;
     public Cat(String name, int age) {
         super(name, age);
         catCount++;
+        this.isFull = false;
     }
     @Override
     public void run(int distance) {
@@ -63,6 +65,19 @@ class Cat extends Animal {
     }
     public static int getCatCount() {
         return catCount;
+    }
+    public boolean isFull() {
+        return isFull;
+    }
+    public void eat(Plate plate) {
+        int foodNeeded = 5;
+        if (plate.getFood() >= foodNeeded) {
+            plate.decreaseFood(foodNeeded);
+            isFull = true;
+            System.out.println(name + " покушал и теперь сыт.");
+        } else {
+            System.out.println("Для " + name + "а" + " не хватает еды в тарелке.");
+        }
     }
 }
 class Main {
@@ -82,5 +97,16 @@ class Main {
         System.out.println("Всего животных: " + Animal.getAnimalCount());
         System.out.println("Всего собак: " + Dog.getDogCount());
         System.out.println("Всего котов: " + Cat.getCatCount());
+        Cat[] cats = {cat1, cat2};
+        Plate plate = new Plate(6);
+        for (Cat cat : cats) {
+            cat.eat(plate);
+        }
+        for (Cat cat : cats) {
+            System.out.println(cat.name + " сыт: " + cat.isFull());
+        }
+        plate.info();
+        plate.addFood(10); // Добавляем 10 единиц еды в тарелку
+        plate.info();
     }
 }

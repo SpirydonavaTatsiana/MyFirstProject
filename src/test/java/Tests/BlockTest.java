@@ -1,3 +1,5 @@
+package Tests;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +11,7 @@ import java.time.Duration;
 
 import static org.junit.Assert.assertEquals;
 
-public class BlockTestJUnit {
+public class BlockTest {
 
     private WebDriver driver;
 

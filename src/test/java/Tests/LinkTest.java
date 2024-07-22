@@ -8,11 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 public class LinkTest {
     private WebDriver driver;
@@ -20,7 +16,6 @@ public class LinkTest {
 
     @Before
     public void setUp() {
-        // Указываем путь к драйверу Chrome
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\astonuser\\Downloads\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
@@ -29,26 +24,16 @@ public class LinkTest {
 
     @Test
     public void testServiceLink() {
-        // Открываем сайт MTS
         driver.get("https://mts.by");
-
-        // Находим элемент "Подробнее о сервисе" в блоке "Онлайн пополнение без комиссии"
+        driver.findElement(By.id("cookie-agree")).click();
         WebElement serviceLink = driver.findElement(By.xpath("//a[contains(text(), 'Подробнее о сервисе')]"));
-
-        // Переходим по ссылке
         serviceLink.click();
-
-        // Здесь можно добавить ожидания, например:
-        // Ожидаем появления заголовка или ключевого элемента на новой странице
-        WebElement pageHeader = driver.findElement(By.xpath("//h1[contains(text(), 'Порядок оплаты и безопасность интернет платежей')]"));
-
-        // Проверяем, что заголовок страницы соответствует ожидаемому
+        WebElement pageHeader = driver.findElement(By.xpath("//div/div/div/div/ul/li[3]/span/span[contains(text(), 'Порядок оплаты и безопасность интернет платежей')]"));
         Assert.assertEquals("Порядок оплаты и безопасность интернет платежей", pageHeader.getText());
     }
 
     @After
     public void tearDown() {
-        // Закрываем браузер после выполнения теста
         if (driver != null) {
             driver.quit();
         }

@@ -9,8 +9,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -26,7 +29,7 @@ public class OnlineReplenishment {
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\astonuser\\Downloads\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+
     }
 
     @Test
@@ -45,8 +48,19 @@ public class OnlineReplenishment {
         emailInput.sendKeys("ivanov456987@gmail.com");
         WebElement continueButton = driver.findElement(By.xpath("//button[contains(text(), 'Продолжить')]"));
         continueButton.click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // 10 секунд ожидания
+        wait.until(ExpectedConditions.numberOfWindowsToBe(2)); // ожидаем открытие нового окна
 
+        // Получение всех идентификаторов окон
+        List<String> windowHandles = new ArrayList<>(driver.getWindowHandles());
 
+        // Переключаемся на новое окно (предполагая, что это второе окно в списке)
+        for (String handle : windowHandles) {
+            if (!handle.equals(mainWindowHandle)) {
+                driver.switchTo().window(handle);
+                break;
+            }
+        }
 
 
         WebElement cardNumberInput = driver.findElement(By.xpath("//form/div[1]/div[1]/app-input/div/div/div[1]/label[contains(text(), 'Номер карты')]")); //html/body/app-root/div/div/div/app-payment-container/section/div/app-card-page/div/div[1]/app-card-input/form/div[1]/div[1]/app-input/div/div/div[1]/label

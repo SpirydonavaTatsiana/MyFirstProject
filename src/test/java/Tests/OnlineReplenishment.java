@@ -48,7 +48,7 @@ public class OnlineReplenishment {
         emailInput.sendKeys("ivanov456987@gmail.com");
         WebElement continueButton = driver.findElement(By.xpath("//button[contains(text(), 'Продолжить')]"));
         continueButton.click();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // 10 секунд ожидания
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.numberOfWindowsToBe(2)); // ожидаем открытие нового окна
 
         // Получение всех идентификаторов окон

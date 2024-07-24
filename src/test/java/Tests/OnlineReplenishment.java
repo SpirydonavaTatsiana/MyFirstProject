@@ -1,10 +1,8 @@
 package Tests;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,12 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class OnlineReplenishment {
@@ -36,7 +29,7 @@ public class OnlineReplenishment {
     public void checkFillingForm() {
         driver.get("https://mts.by");
         driver.findElement(By.id("cookie-agree")).click();
-        String mainWindowHandle = driver.getWindowHandle();
+
         WebElement phoneNumberInput = driver.findElement(By.id("connection-phone"));
         phoneNumberInput.click();
         phoneNumberInput.sendKeys("297777777");
@@ -48,24 +41,17 @@ public class OnlineReplenishment {
         emailInput.sendKeys("ivanov456987@gmail.com");
         WebElement continueButton = driver.findElement(By.xpath("//button[contains(text(), 'Продолжить')]"));
         continueButton.click();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.numberOfWindowsToBe(2)); // ожидаем открытие нового окна
 
-        // Получение всех идентификаторов окон
-        List<String> windowHandles = new ArrayList<>(driver.getWindowHandles());
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        WebElement element = (new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.presenceOfElementLocated(By.className("bepaid-app"))));
 
-        // Переключаемся на новое окно (предполагая, что это второе окно в списке)
-        for (String handle : windowHandles) {
-            if (!handle.equals(mainWindowHandle)) {
-                driver.switchTo().window(handle);
-                break;
-            }
-        }
+        //возможно тут надо все-таки как-то преключиться на это окно, хотя я пробовала уже, но может не так...
 
 
-        WebElement cardNumberInput = driver.findElement(By.xpath("//form/div[1]/div[1]/app-input/div/div/div[1]/label[contains(text(), 'Номер карты')]")); //html/body/app-root/div/div/div/app-payment-container/section/div/app-card-page/div/div[1]/app-card-input/form/div[1]/div[1]/app-input/div/div/div[1]/label
-        String cardNumberPlaceholder = cardNumberInput.getAttribute("placeholder");
-        assertEquals("Номер карты", cardNumberPlaceholder, "Плейсхолдер для номера карты не соответствует ожидаемому.");
+        WebElement cardNumberInput = driver.findElement(By.tagName("LABEL")); //By.xpath("//div[1]/label[contains(text(), 'Номер')]"));
+        String cardNumberText = cardNumberInput.getAttribute("innerText"); //html/body/app-root/div/div/div/app-payment-container/section/div/app-card-page/div/div[1]/app-card-input/form/div[1]/div[1]/app-input/div/div/div[1]/label
+        assertEquals("Номер карты", cardNumberText, "Плейсхолдер для номера карты не соответствует ожидаемому.");
 
         WebElement expiryDateInput = driver.findElement(By.name("expirationDate"));
         String expiryDatePlaceholder = expiryDateInput.getAttribute("placeholder");
@@ -86,6 +72,8 @@ public class OnlineReplenishment {
         String phoneNumber = driver.findElement(By.xpath("//div/div/div[1]/span[1][contains(text(), 'Оплата: Услуги связи Номер:375297777777')]")).getText();
         System.out.println("Название блока: " + phoneNumber);
         Assert.assertEquals("Оплата: Услуги связи Номер:375297777777", phoneNumber);
+
+
     }
         // Вернуться обратно в основное окно
         //driver.switchTo().window(mainWindow);
